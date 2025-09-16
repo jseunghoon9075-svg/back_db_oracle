@@ -295,27 +295,37 @@ WHERE POST_ID IN (
 	WHERE REPLY_CONTENT LIKE '%한민%'
 );
 
--- 9) 평균 댓글 개수보다 작게 달린 게시글을 작성한 유저
-
---게시글의 평균 댓글 개수 1.8개
-
-SELECT USER_ID
-FROM TBL_REPLY
-GROUP BY POST_ID, USER_ID
-HAVING COUNT(POST_ID) IN (
-	SELECT AVG((COUNT(POST_ID)))
-	FROM TBL_REPLY
-	GROUP BY POST_ID
+-- 9) 평균 댓글 개수보다 많이 달린 게시글을 작성한 유저
+SELECT * 
+FROM TBL_USER
+WHERE ID IN (
+   SELECT USER_ID
+   FROM TBL_POST
+   WHERE ID IN (
+      SELECT POST_ID
+      FROM TBL_REPLY
+      GROUP BY POST_ID
+      HAVING COUNT(POST_ID) > (
+         SELECT AVG(COUNT(POST_ID))
+         FROM TBL_REPLY
+         GROUP BY POST_ID
+      )
+   )
 );
 
--- 평균 댓글 개수 > 게시글의 댓글
-
-
 -- 10) 가장 댓글을 적게 작성한 유저가 작성한 게시글
- 
-SELECT USER_ID 
-FROM TBL_REPLY;
-
+SELECT * 
+FROM TBL_POST 
+WHERE USER_ID IN (
+   SELECT USER_ID
+   FROM (
+      SELECT USER_ID
+      FROM TBL_REPLY
+      GROUP BY USER_ID
+      ORDER BY COUNT(USER_ID)
+   )
+   WHERE ROWNUM <= 4
+);
 
 
 
