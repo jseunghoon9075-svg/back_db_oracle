@@ -59,3 +59,40 @@ FROM TBL_REGISTER;
 INSERT INTO TBL_REGISTER
 VALUES(SEQ_REGISTER.NEXTVAL, 'alslrnf2', '123456', '전승훈', 28, '010-9075-3368', 'jhing9075@gmail.com')
 
+	SELECT ID, 	REGISTER_NICKNAME
+	FROM TBL_REGISTER
+	WHERE REGISTER_NICKNAME = #{userNickName};
+
+--	private Long id;
+--	private String memberEmail;
+--	private String memberPassword;
+--	private String memberName;
+--	private Integer memberAge;
+--	private String memberAddress;
+CREATE SEQUENCE SEQ_MEMBER;
+CREATE TABLE TBL_MEMBER(
+	ID VARCHAR2(255) CONSTRAINT PK_MEMBER PRIMARY KEY,
+	MEMBER_NAME VARCHAR2(255) NOT NULL,
+	MEMBER_PASSWORD VARCHAR2(255) NOT NULL,
+	MEMBER_AGE NUMBER,
+	MEMBER_PHONE VARCHAR2(255),
+	MEMBER_EMAIL VARCHAR2(255) 
+);
+
+INSERT INTO TBL_MEMBER
+VALUES('alslrnf', '홍길동', '1234', 25, '010-5464-7887', 'hgd1234@naver.com');
+INSERT INTO TBL_MEMBER
+VALUES('hdg', '홍길동', '1234', 25, '010-5464-7887', 'hgd1234@naver.com');
+--	1.아이디 중복검사(checkId)
+			SELECT ID, MEMBER_NAME, MEMBER_PASSWORD, MEMBER_AGE, MEMBER_PHONE, MEMBER_EMAIL
+			FROM TBL_MEMBER;
+
+--2.회원가입(join)
+INSERT INTO TBL_MEMBER
+VALUES(ID = #{id}, MEMBER_NAME = #{userName}, MEMBER_PASSWORD = #{userPassword}, MEMBER_AGE = #{userAge}, MEMBER_PHONE = #{userPhone}, MEMBER_EMAIL = #{userEmail})
+
+--3.로그인(login)
+--4.회원정보수정(update)
+--5.로그인 전 비밀번호 변경(changePassword)
+
+	
